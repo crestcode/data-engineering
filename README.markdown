@@ -4,7 +4,7 @@ This application relies the latest stable versions of Ruby (2.1.1) and Rails (4.
 
 ## To Install and Run:
 
-1. Clone the git repository.
+1. Clone the git repository: 'git clone git@github.com:crestcode/data-engineering.git'
 1. Navigate to the application's root directory: 'cd data-engineering'
 1. Run 'bundle install'
 1. Run 'rake db:migrate'
