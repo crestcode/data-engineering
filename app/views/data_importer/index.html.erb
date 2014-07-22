@@ -1,0 +1,12 @@
+<% if params[:notice] %>
+    <p id='notice'><%= params[:notice] %></p>
+<% end %>
+
+<% if params[:error] %>
+    <p id='error'><%= params[:error] %></p>
+<% end %>
+<h3>Import Purchase Data</h3>
+<%= form_tag data_importer_index_path, multipart: true do %>
+    <%= file_field_tag :purchases_file %>
+    <%= submit_tag 'Upload File' %>
+<% end %>

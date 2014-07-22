@@ -1,0 +1,1914 @@
+From db07c479217098a9ce9e2186813d4a691d46e49f Mon Sep 17 00:00:00 2001
+From: John Kasiewicz <crestcode@gmail.com>
+Date: Thu, 8 May 2014 20:39:18 -0400
+Subject: [PATCH] John Kasiewicz submission
+
+---
+ .gitignore                                        |  18 ++++
+ Gemfile                                           |  39 +++++++
+ Gemfile.lock                                      | 125 ++++++++++++++++++++++
+ README.markdown                                   |  20 +++-
+ Rakefile                                          |   6 ++
+ app/assets/images/.keep                           |   0
+ app/assets/javascripts/application.js             |  16 +++
+ app/assets/stylesheets/application.css            |  15 +++
+ app/assets/stylesheets/scaffolds.css.scss         |  73 +++++++++++++
+ app/controllers/application_controller.rb         |   5 +
+ app/controllers/concerns/.keep                    |   0
+ app/controllers/data_importer_controller.rb       |  17 +++
+ app/helpers/application_helper.rb                 |   2 +
+ app/helpers/data_importer_helper.rb               |   2 +
+ app/mailers/.keep                                 |   0
+ app/models/.keep                                  |   0
+ app/models/concerns/.keep                         |   0
+ app/models/data_importer.rb                       |  29 +++++
+ app/models/item.rb                                |   6 ++
+ app/models/merchant.rb                            |   4 +
+ app/models/purchase.rb                            |   6 ++
+ app/models/purchaser.rb                           |   4 +
+ app/views/data_importer/index.html.erb            |  12 +++
+ app/views/layouts/application.html.erb            |  14 +++
+ bin/bundle                                        |   3 +
+ bin/rails                                         |   8 ++
+ bin/rake                                          |   8 ++
+ bin/spring                                        |  18 ++++
+ config.ru                                         |   4 +
+ config/application.rb                             |  23 ++++
+ config/boot.rb                                    |   4 +
+ config/database.yml                               |  25 +++++
+ config/environment.rb                             |   5 +
+ config/environments/development.rb                |  37 +++++++
+ config/environments/production.rb                 |  83 ++++++++++++++
+ config/environments/test.rb                       |  39 +++++++
+ config/initializers/backtrace_silencers.rb        |   7 ++
+ config/initializers/cookies_serializer.rb         |   3 +
+ config/initializers/filter_parameter_logging.rb   |   4 +
+ config/initializers/inflections.rb                |  16 +++
+ config/initializers/mime_types.rb                 |   4 +
+ config/initializers/session_store.rb              |   3 +
+ config/initializers/wrap_parameters.rb            |  14 +++
+ config/locales/en.yml                             |  23 ++++
+ config/routes.rb                                  |  59 ++++++++++
+ config/secrets.yml                                |  22 ++++
+ db/migrate/20140508144513_create_purchasers.rb    |   9 ++
+ db/migrate/20140508144608_create_merchants.rb     |  10 ++
+ db/migrate/20140508144647_create_items.rb         |  11 ++
+ db/migrate/20140508144803_create_purchases.rb     |  11 ++
+ db/schema.rb                                      |  45 ++++++++
+ db/seeds.rb                                       |   7 ++
+ example_input.tab                                 |   2 +-
+ lib/assets/.keep                                  |   0
+ lib/tasks/.keep                                   |   0
+ log/.keep                                         |   0
+ public/404.html                                   |  67 ++++++++++++
+ public/422.html                                   |  67 ++++++++++++
+ public/500.html                                   |  66 ++++++++++++
+ public/favicon.ico                                |   0
+ public/robots.txt                                 |   5 +
+ test/controllers/.keep                            |   0
+ test/controllers/data_importer_controller_test.rb |  20 ++++
+ test/fixtures/.keep                               |   0
+ test/fixtures/items.yml                           |  11 ++
+ test/fixtures/merchants.yml                       |   9 ++
+ test/fixtures/purchasers.yml                      |   7 ++
+ test/fixtures/purchases.yml                       |  11 ++
+ test/helpers/.keep                                |   0
+ test/helpers/data_importer_helper_test.rb         |   4 +
+ test/integration/.keep                            |   0
+ test/mailers/.keep                                |   0
+ test/models/.keep                                 |   0
+ test/models/data_importer_test.rb                 |  10 ++
+ test/models/item_test.rb                          |  33 ++++++
+ test/models/merchant_test.rb                      |  14 +++
+ test/models/purchase_test.rb                      |  30 ++++++
+ test/models/purchaser_test.rb                     |  13 +++
+ test/test_helper.rb                               |  13 +++
+ vendor/assets/javascripts/.keep                   |   0
+ vendor/assets/stylesheets/.keep                   |   0
+ 81 files changed, 1298 insertions(+), 2 deletions(-)
+ create mode 100644 .gitignore
+ create mode 100644 Gemfile
+ create mode 100644 Gemfile.lock
+ create mode 100644 Rakefile
+ create mode 100644 app/assets/images/.keep
+ create mode 100644 app/assets/javascripts/application.js
+ create mode 100644 app/assets/stylesheets/application.css
+ create mode 100644 app/assets/stylesheets/scaffolds.css.scss
+ create mode 100644 app/controllers/application_controller.rb
+ create mode 100644 app/controllers/concerns/.keep
+ create mode 100644 app/controllers/data_importer_controller.rb
+ create mode 100644 app/helpers/application_helper.rb
+ create mode 100644 app/helpers/data_importer_helper.rb
+ create mode 100644 app/mailers/.keep
+ create mode 100644 app/models/.keep
+ create mode 100644 app/models/concerns/.keep
+ create mode 100644 app/models/data_importer.rb
+ create mode 100644 app/models/item.rb
+ create mode 100644 app/models/merchant.rb
+ create mode 100644 app/models/purchase.rb
+ create mode 100644 app/models/purchaser.rb
+ create mode 100644 app/views/data_importer/index.html.erb
+ create mode 100644 app/views/layouts/application.html.erb
+ create mode 100755 bin/bundle
+ create mode 100755 bin/rails
+ create mode 100755 bin/rake
+ create mode 100755 bin/spring
+ create mode 100644 config.ru
+ create mode 100644 config/application.rb
+ create mode 100644 config/boot.rb
+ create mode 100644 config/database.yml
+ create mode 100644 config/environment.rb
+ create mode 100644 config/environments/development.rb
+ create mode 100644 config/environments/production.rb
+ create mode 100644 config/environments/test.rb
+ create mode 100644 config/initializers/backtrace_silencers.rb
+ create mode 100644 config/initializers/cookies_serializer.rb
+ create mode 100644 config/initializers/filter_parameter_logging.rb
+ create mode 100644 config/initializers/inflections.rb
+ create mode 100644 config/initializers/mime_types.rb
+ create mode 100644 config/initializers/session_store.rb
+ create mode 100644 config/initializers/wrap_parameters.rb
+ create mode 100644 config/locales/en.yml
+ create mode 100644 config/routes.rb
+ create mode 100644 config/secrets.yml
+ create mode 100644 db/migrate/20140508144513_create_purchasers.rb
+ create mode 100644 db/migrate/20140508144608_create_merchants.rb
+ create mode 100644 db/migrate/20140508144647_create_items.rb
+ create mode 100644 db/migrate/20140508144803_create_purchases.rb
+ create mode 100644 db/schema.rb
+ create mode 100644 db/seeds.rb
+ create mode 100644 lib/assets/.keep
+ create mode 100644 lib/tasks/.keep
+ create mode 100644 log/.keep
+ create mode 100644 public/404.html
+ create mode 100644 public/422.html
+ create mode 100644 public/500.html
+ create mode 100644 public/favicon.ico
+ create mode 100644 public/robots.txt
+ create mode 100644 test/controllers/.keep
+ create mode 100644 test/controllers/data_importer_controller_test.rb
+ create mode 100644 test/fixtures/.keep
+ create mode 100644 test/fixtures/items.yml
+ create mode 100644 test/fixtures/merchants.yml
+ create mode 100644 test/fixtures/purchasers.yml
+ create mode 100644 test/fixtures/purchases.yml
+ create mode 100644 test/helpers/.keep
+ create mode 100644 test/helpers/data_importer_helper_test.rb
+ create mode 100644 test/integration/.keep
+ create mode 100644 test/mailers/.keep
+ create mode 100644 test/models/.keep
+ create mode 100644 test/models/data_importer_test.rb
+ create mode 100644 test/models/item_test.rb
+ create mode 100644 test/models/merchant_test.rb
+ create mode 100644 test/models/purchase_test.rb
+ create mode 100644 test/models/purchaser_test.rb
+ create mode 100644 test/test_helper.rb
+ create mode 100644 vendor/assets/javascripts/.keep
+ create mode 100644 vendor/assets/stylesheets/.keep
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..889278f
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,18 @@
++# See http://help.github.com/ignore-files/ for more about ignoring files.
++#
++# If you find yourself ignoring temporary files generated by your text editor
++# or operating system, you probably want to add a global ignore instead:
++#   git config --global core.excludesfile ~/.gitignore_global
++
++# Ignore bundler config
++/.bundle
++
++# Ignore the default SQLite database.
++/db/*.sqlite3
++
++# Ignore all logfiles and tempfiles.
++/log/*.log
++/tmp
++
++# Ignore all RubyMine files
++/.idea
+\ No newline at end of file
+diff --git a/Gemfile b/Gemfile
+new file mode 100644
+index 0000000..334af06
+--- /dev/null
++++ b/Gemfile
+@@ -0,0 +1,39 @@
++source 'https://rubygems.org'
++
++
++# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
++gem 'rails', '4.1.1'
++# Use sqlite3 as the database for Active Record
++gem 'sqlite3'
++# Use SCSS for stylesheets
++gem 'sass-rails', '~> 4.0.3'
++# Use Uglifier as compressor for JavaScript assets
++gem 'uglifier', '>= 1.3.0'
++# Use CoffeeScript for .js.coffee assets and views
++gem 'coffee-rails', '~> 4.0.0'
++# See https://github.com/sstephenson/execjs#readme for more supported runtimes
++# gem 'therubyracer',  platforms: :ruby
++
++# Use jquery as the JavaScript library
++gem 'jquery-rails'
++# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
++gem 'turbolinks'
++# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
++gem 'jbuilder', '~> 2.0'
++# bundle exec rake doc:rails generates the API under doc/api.
++gem 'sdoc', '~> 0.4.0',          group: :doc
++
++# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
++gem 'spring',        group: :development
++
++# Use ActiveModel has_secure_password
++# gem 'bcrypt', '~> 3.1.7'
++
++# Use unicorn as the app server
++# gem 'unicorn'
++
++# Use Capistrano for deployment
++# gem 'capistrano-rails', group: :development
++
++# Use debugger
++# gem 'debugger', group: [:development, :test]
+diff --git a/Gemfile.lock b/Gemfile.lock
+new file mode 100644
+index 0000000..d248862
+--- /dev/null
++++ b/Gemfile.lock
+@@ -0,0 +1,125 @@
++GEM
++  remote: https://rubygems.org/
++  specs:
++    actionmailer (4.1.1)
++      actionpack (= 4.1.1)
++      actionview (= 4.1.1)
++      mail (~> 2.5.4)
++    actionpack (4.1.1)
++      actionview (= 4.1.1)
++      activesupport (= 4.1.1)
++      rack (~> 1.5.2)
++      rack-test (~> 0.6.2)
++    actionview (4.1.1)
++      activesupport (= 4.1.1)
++      builder (~> 3.1)
++      erubis (~> 2.7.0)
++    activemodel (4.1.1)
++      activesupport (= 4.1.1)
++      builder (~> 3.1)
++    activerecord (4.1.1)
++      activemodel (= 4.1.1)
++      activesupport (= 4.1.1)
++      arel (~> 5.0.0)
++    activesupport (4.1.1)
++      i18n (~> 0.6, >= 0.6.9)
++      json (~> 1.7, >= 1.7.7)
++      minitest (~> 5.1)
++      thread_safe (~> 0.1)
++      tzinfo (~> 1.1)
++    arel (5.0.1.20140414130214)
++    builder (3.2.2)
++    coffee-rails (4.0.1)
++      coffee-script (>= 2.2.0)
++      railties (>= 4.0.0, < 5.0)
++    coffee-script (2.2.0)
++      coffee-script-source
++      execjs
++    coffee-script-source (1.7.0)
++    erubis (2.7.0)
++    execjs (2.0.2)
++    hike (1.2.3)
++    i18n (0.6.9)
++    jbuilder (2.0.7)
++      activesupport (>= 3.0.0, < 5)
++      multi_json (~> 1.2)
++    jquery-rails (3.1.0)
++      railties (>= 3.0, < 5.0)
++      thor (>= 0.14, < 2.0)
++    json (1.8.1)
++    mail (2.5.4)
++      mime-types (~> 1.16)
++      treetop (~> 1.4.8)
++    mime-types (1.25.1)
++    minitest (5.3.3)
++    multi_json (1.10.0)
++    polyglot (0.3.4)
++    rack (1.5.2)
++    rack-test (0.6.2)
++      rack (>= 1.0)
++    rails (4.1.1)
++      actionmailer (= 4.1.1)
++      actionpack (= 4.1.1)
++      actionview (= 4.1.1)
++      activemodel (= 4.1.1)
++      activerecord (= 4.1.1)
++      activesupport (= 4.1.1)
++      bundler (>= 1.3.0, < 2.0)
++      railties (= 4.1.1)
++      sprockets-rails (~> 2.0)
++    railties (4.1.1)
++      actionpack (= 4.1.1)
++      activesupport (= 4.1.1)
++      rake (>= 0.8.7)
++      thor (>= 0.18.1, < 2.0)
++    rake (10.3.1)
++    rdoc (4.1.1)
++      json (~> 1.4)
++    sass (3.2.19)
++    sass-rails (4.0.3)
++      railties (>= 4.0.0, < 5.0)
++      sass (~> 3.2.0)
++      sprockets (~> 2.8, <= 2.11.0)
++      sprockets-rails (~> 2.0)
++    sdoc (0.4.0)
++      json (~> 1.8)
++      rdoc (~> 4.0, < 5.0)
++    spring (1.1.2)
++    sprockets (2.11.0)
++      hike (~> 1.2)
++      multi_json (~> 1.0)
++      rack (~> 1.0)
++      tilt (~> 1.1, != 1.3.0)
++    sprockets-rails (2.1.3)
++      actionpack (>= 3.0)
++      activesupport (>= 3.0)
++      sprockets (~> 2.8)
++    sqlite3 (1.3.9)
++    thor (0.19.1)
++    thread_safe (0.3.3)
++    tilt (1.4.1)
++    treetop (1.4.15)
++      polyglot
++      polyglot (>= 0.3.1)
++    turbolinks (2.2.2)
++      coffee-rails
++    tzinfo (1.1.0)
++      thread_safe (~> 0.1)
++    uglifier (2.5.0)
++      execjs (>= 0.3.0)
++      json (>= 1.8.0)
++
++PLATFORMS
++  ruby
++
++DEPENDENCIES
++  coffee-rails (~> 4.0.0)
++  jbuilder (~> 2.0)
++  jquery-rails
++  rails (= 4.1.1)
++  sass-rails (~> 4.0.3)
++  sdoc (~> 0.4.0)
++  spring
++  sqlite3
++  turbolinks
++  uglifier (>= 1.3.0)
+diff --git a/README.markdown b/README.markdown
+index c6e791d..89519e3 100644
+--- a/README.markdown
++++ b/README.markdown
+@@ -1,4 +1,22 @@
+-# Challenge for Software Engineer - Big Data 
++# Installation Instructions
++
++This application relies the latest stable versions of Ruby (2.1.1) and Rails (4.1.1).
++
++## To Install and Run:
++
++1. Clone the git repository: 'git clone git@github.com:lschallenges/data-engineering.git'
++1. Navigate to the application's root directory: 'cd data-engineering'
++1. Copy the 'john\_k_submission.patch' file into this directory
++1. Run 'git apply john\_k_submission.patch'
++1. Run 'bundle install'
++1. Run 'rake db:migrate'
++1. Run 'rake test' to verify all tests pass
++1. Run 'rails s'
++1. Point your web browser to 'http://localhost:3000'
++1. Click the 'Choose File' button to select a properly formatted tab delimited data file
++1. Click the 'Upload File' file to upload and import the data
++
++# Challenge for Software Engineer - Big Data
+ To better assess a candidates development skills, we would like to provide the following challenge.  You have as much time as you'd like (though we ask that you not spend more than a few hours).
+ 
+ There are three jobs that both use this challenge:
+diff --git a/Rakefile b/Rakefile
+new file mode 100644
+index 0000000..ba6b733
+--- /dev/null
++++ b/Rakefile
+@@ -0,0 +1,6 @@
++# Add your own tasks in files placed in lib/tasks ending in .rake,
++# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
++
++require File.expand_path('../config/application', __FILE__)
++
++Rails.application.load_tasks
+diff --git a/app/assets/images/.keep b/app/assets/images/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/assets/javascripts/application.js b/app/assets/javascripts/application.js
+new file mode 100644
+index 0000000..d6925fa
+--- /dev/null
++++ b/app/assets/javascripts/application.js
+@@ -0,0 +1,16 @@
++// This is a manifest file that'll be compiled into application.js, which will include all the files
++// listed below.
++//
++// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
++// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
++//
++// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
++// compiled file.
++//
++// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
++// about supported directives.
++//
++//= require jquery
++//= require jquery_ujs
++//= require turbolinks
++//= require_tree .
+diff --git a/app/assets/stylesheets/application.css b/app/assets/stylesheets/application.css
+new file mode 100644
+index 0000000..a443db3
+--- /dev/null
++++ b/app/assets/stylesheets/application.css
+@@ -0,0 +1,15 @@
++/*
++ * This is a manifest file that'll be compiled into application.css, which will include all the files
++ * listed below.
++ *
++ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
++ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
++ *
++ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
++ * compiled file so the styles you add here take precedence over styles defined in any styles
++ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
++ * file per style scope.
++ *
++ *= require_tree .
++ *= require_self
++ */
+diff --git a/app/assets/stylesheets/scaffolds.css.scss b/app/assets/stylesheets/scaffolds.css.scss
+new file mode 100644
+index 0000000..46e29c0
+--- /dev/null
++++ b/app/assets/stylesheets/scaffolds.css.scss
+@@ -0,0 +1,73 @@
++body {
++  background-color: #fff;
++  color: #333;
++  font-family: verdana, arial, helvetica, sans-serif;
++  font-size: 13px;
++  line-height: 18px;
++}
++
++p, ol, ul, td {
++  font-family: verdana, arial, helvetica, sans-serif;
++  font-size: 13px;
++  line-height: 18px;
++}
++
++pre {
++  background-color: #eee;
++  padding: 10px;
++  font-size: 11px;
++}
++
++a {
++  color: #000;
++  &:visited {
++    color: #666;
++  }
++  &:hover {
++    color: #fff;
++    background-color: #000;
++  }
++}
++
++div {
++  &.field, &.actions {
++    margin-bottom: 10px;
++  }
++}
++
++#notice {
++  color: green;
++}
++
++#error {
++  color: red;
++}
++
++.field_with_errors {
++  padding: 2px;
++  background-color: red;
++  display: table;
++}
++
++#error_explanation {
++  width: 450px;
++  border: 2px solid red;
++  padding: 7px;
++  padding-bottom: 0;
++  margin-bottom: 20px;
++  background-color: #f0f0f0;
++  h2 {
++    text-align: left;
++    font-weight: bold;
++    padding: 5px 5px 5px 15px;
++    font-size: 12px;
++    margin: -7px;
++    margin-bottom: 0px;
++    background-color: #c00;
++    color: #fff;
++  }
++  ul li {
++    font-size: 12px;
++    list-style: square;
++  }
++}
+diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
+new file mode 100644
+index 0000000..d83690e
+--- /dev/null
++++ b/app/controllers/application_controller.rb
+@@ -0,0 +1,5 @@
++class ApplicationController < ActionController::Base
++  # Prevent CSRF attacks by raising an exception.
++  # For APIs, you may want to use :null_session instead.
++  protect_from_forgery with: :exception
++end
+diff --git a/app/controllers/concerns/.keep b/app/controllers/concerns/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/controllers/data_importer_controller.rb b/app/controllers/data_importer_controller.rb
+new file mode 100644
+index 0000000..3594fe9
+--- /dev/null
++++ b/app/controllers/data_importer_controller.rb
+@@ -0,0 +1,17 @@
++class DataImporterController < ApplicationController
++
++  def index
++  end
++
++  def create
++    begin
++      total_amount_gross_revenue = DataImporter.import(params['purchases_file'].path)
++      redirect_to action: index, notice: "File was successfully imported. Total amount gross revenue: #{view_context.number_to_currency(total_amount_gross_revenue)}"
++    rescue Exception => e
++      logger.error "!!! Import failed. Error: #{e.message}"
++      redirect_to action: index, error: 'Import failed. Please make sure your file is properly formatted.'
++    end
++
++  end
++
++end
+diff --git a/app/helpers/application_helper.rb b/app/helpers/application_helper.rb
+new file mode 100644
+index 0000000..de6be79
+--- /dev/null
++++ b/app/helpers/application_helper.rb
+@@ -0,0 +1,2 @@
++module ApplicationHelper
++end
+diff --git a/app/helpers/data_importer_helper.rb b/app/helpers/data_importer_helper.rb
+new file mode 100644
+index 0000000..3e195b7
+--- /dev/null
++++ b/app/helpers/data_importer_helper.rb
+@@ -0,0 +1,2 @@
++module DataImporterHelper
++end
+diff --git a/app/mailers/.keep b/app/mailers/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/models/.keep b/app/models/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/models/concerns/.keep b/app/models/concerns/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/models/data_importer.rb b/app/models/data_importer.rb
+new file mode 100644
+index 0000000..1b24d4e
+--- /dev/null
++++ b/app/models/data_importer.rb
+@@ -0,0 +1,29 @@
++require 'csv'
++
++class DataImporter < ActiveRecord::Base
++
++  def self.import(filepath)
++    total_amount_gross_revenue = BigDecimal.new("0")
++    CSV.foreach(filepath, headers: true, header_converters: :symbol, converters: :numeric, col_sep: "\t") do |row|
++      row_total_amount_gross_revenue = import_row(row)
++      total_amount_gross_revenue += row_total_amount_gross_revenue
++    end
++    total_amount_gross_revenue
++  end
++
++  def self.import_row(row)
++    purchaser = Purchaser.find_or_create_by(name: row[:purchaser_name])
++    merchant = Merchant.find_or_create_by(name: row[:merchant_name], address: row[:merchant_address])
++    item = Item.find_or_create_by(description: row[:item_description], price: row[:item_price], merchant_id: merchant.id)
++    # always create a new purchase row, assuming a purchaser can buy the same item across multiple purchases
++    purchase = Purchase.create(count: row[:purchase_count], item_id: item.id, purchaser_id: purchaser.id)
++    calculate_row_total_amount_gross_revenue(purchase.count, item.price)
++  end
++
++  def self.calculate_row_total_amount_gross_revenue(purchase_count, item_price)
++    purchase_count*item_price
++  end
++
++  private_class_method :import_row, :calculate_row_total_amount_gross_revenue
++
++end
+diff --git a/app/models/item.rb b/app/models/item.rb
+new file mode 100644
+index 0000000..cc6af2e
+--- /dev/null
++++ b/app/models/item.rb
+@@ -0,0 +1,6 @@
++class Item < ActiveRecord::Base
++  validates :description, :price, :merchant_id, presence: true
++  validates :price, numericality: {greater_than_or_equal_to: 0.01}
++  belongs_to :merchant
++  has_many :purchases
++end
+diff --git a/app/models/merchant.rb b/app/models/merchant.rb
+new file mode 100644
+index 0000000..9b8e70d
+--- /dev/null
++++ b/app/models/merchant.rb
+@@ -0,0 +1,4 @@
++class Merchant < ActiveRecord::Base
++  validates :name, :address, presence: true
++  has_many :items
++end
+diff --git a/app/models/purchase.rb b/app/models/purchase.rb
+new file mode 100644
+index 0000000..054f875
+--- /dev/null
++++ b/app/models/purchase.rb
+@@ -0,0 +1,6 @@
++class Purchase < ActiveRecord::Base
++  validates :count, :purchaser_id, :item_id, presence: true
++  validates :count, numericality: {greater_than_or_equal_to: 1}
++  belongs_to :purchaser
++  belongs_to :item
++end
+diff --git a/app/models/purchaser.rb b/app/models/purchaser.rb
+new file mode 100644
+index 0000000..d2d0115
+--- /dev/null
++++ b/app/models/purchaser.rb
+@@ -0,0 +1,4 @@
++class Purchaser < ActiveRecord::Base
++  validates :name, presence: true
++  has_many :purchases
++end
+diff --git a/app/views/data_importer/index.html.erb b/app/views/data_importer/index.html.erb
+new file mode 100644
+index 0000000..2949a54
+--- /dev/null
++++ b/app/views/data_importer/index.html.erb
+@@ -0,0 +1,12 @@
++<% if params[:notice] %>
++    <p id='notice'><%= params[:notice] %></p>
++<% end %>
++
++<% if params[:error] %>
++    <p id='error'><%= params[:error] %></p>
++<% end %>
++<h3>Import Purchase Data</h3>
++<%= form_tag data_importer_index_path, multipart: true do %>
++    <%= file_field_tag :purchases_file %>
++    <%= submit_tag 'Upload File' %>
++<% end %>
+\ No newline at end of file
+diff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb
+new file mode 100644
+index 0000000..dfdbe38
+--- /dev/null
++++ b/app/views/layouts/application.html.erb
+@@ -0,0 +1,14 @@
++<!DOCTYPE html>
++<html>
++<head>
++  <title>LivingSocial Data Engineering Challenge</title>
++  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
++  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
++  <%= csrf_meta_tags %>
++</head>
++<body>
++
++<%= yield %>
++
++</body>
++</html>
+diff --git a/bin/bundle b/bin/bundle
+new file mode 100755
+index 0000000..66e9889
+--- /dev/null
++++ b/bin/bundle
+@@ -0,0 +1,3 @@
++#!/usr/bin/env ruby
++ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
++load Gem.bin_path('bundler', 'bundle')
+diff --git a/bin/rails b/bin/rails
+new file mode 100755
+index 0000000..7feb6a3
+--- /dev/null
++++ b/bin/rails
+@@ -0,0 +1,8 @@
++#!/usr/bin/env ruby
++begin
++  load File.expand_path("../spring", __FILE__)
++rescue LoadError
++end
++APP_PATH = File.expand_path('../../config/application',  __FILE__)
++require_relative '../config/boot'
++require 'rails/commands'
+diff --git a/bin/rake b/bin/rake
+new file mode 100755
+index 0000000..8017a02
+--- /dev/null
++++ b/bin/rake
+@@ -0,0 +1,8 @@
++#!/usr/bin/env ruby
++begin
++  load File.expand_path("../spring", __FILE__)
++rescue LoadError
++end
++require_relative '../config/boot'
++require 'rake'
++Rake.application.run
+diff --git a/bin/spring b/bin/spring
+new file mode 100755
+index 0000000..253ec37
+--- /dev/null
++++ b/bin/spring
+@@ -0,0 +1,18 @@
++#!/usr/bin/env ruby
++
++# This file loads spring without using Bundler, in order to be fast
++# It gets overwritten when you run the `spring binstub` command
++
++unless defined?(Spring)
++  require "rubygems"
++  require "bundler"
++
++  if match = Bundler.default_lockfile.read.match(/^GEM$.*?^    spring \((.*?)\)$.*?^$/m)
++    ENV["GEM_PATH"] = ([Bundler.bundle_path.to_s] + Gem.path).join(File::PATH_SEPARATOR)
++    ENV["GEM_HOME"] = ""
++    Gem.paths = ENV
++
++    gem "spring", match[1]
++    require "spring/binstub"
++  end
++end
+diff --git a/config.ru b/config.ru
+new file mode 100644
+index 0000000..5bc2a61
+--- /dev/null
++++ b/config.ru
+@@ -0,0 +1,4 @@
++# This file is used by Rack-based servers to start the application.
++
++require ::File.expand_path('../config/environment',  __FILE__)
++run Rails.application
+diff --git a/config/application.rb b/config/application.rb
+new file mode 100644
+index 0000000..51b424e
+--- /dev/null
++++ b/config/application.rb
+@@ -0,0 +1,23 @@
++require File.expand_path('../boot', __FILE__)
++
++require 'rails/all'
++
++# Require the gems listed in Gemfile, including any gems
++# you've limited to :test, :development, or :production.
++Bundler.require(*Rails.groups)
++
++module DataEngineering
++  class Application < Rails::Application
++    # Settings in config/environments/* take precedence over those specified here.
++    # Application configuration should go into files in config/initializers
++    # -- all .rb files in that directory are automatically loaded.
++
++    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
++    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
++    # config.time_zone = 'Central Time (US & Canada)'
++
++    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
++    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
++    # config.i18n.default_locale = :de
++  end
++end
+diff --git a/config/boot.rb b/config/boot.rb
+new file mode 100644
+index 0000000..5e5f0c1
+--- /dev/null
++++ b/config/boot.rb
+@@ -0,0 +1,4 @@
++# Set up gems listed in the Gemfile.
++ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
++
++require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
+diff --git a/config/database.yml b/config/database.yml
+new file mode 100644
+index 0000000..1c1a37c
+--- /dev/null
++++ b/config/database.yml
+@@ -0,0 +1,25 @@
++# SQLite version 3.x
++#   gem install sqlite3
++#
++#   Ensure the SQLite 3 gem is defined in your Gemfile
++#   gem 'sqlite3'
++#
++default: &default
++  adapter: sqlite3
++  pool: 5
++  timeout: 5000
++
++development:
++  <<: *default
++  database: db/development.sqlite3
++
++# Warning: The database defined as "test" will be erased and
++# re-generated from your development database when you run "rake".
++# Do not set this db to the same as development or production.
++test:
++  <<: *default
++  database: db/test.sqlite3
++
++production:
++  <<: *default
++  database: db/production.sqlite3
+diff --git a/config/environment.rb b/config/environment.rb
+new file mode 100644
+index 0000000..ee8d90d
+--- /dev/null
++++ b/config/environment.rb
+@@ -0,0 +1,5 @@
++# Load the Rails application.
++require File.expand_path('../application', __FILE__)
++
++# Initialize the Rails application.
++Rails.application.initialize!
+diff --git a/config/environments/development.rb b/config/environments/development.rb
+new file mode 100644
+index 0000000..ddf0e90
+--- /dev/null
++++ b/config/environments/development.rb
+@@ -0,0 +1,37 @@
++Rails.application.configure do
++  # Settings specified here will take precedence over those in config/application.rb.
++
++  # In the development environment your application's code is reloaded on
++  # every request. This slows down response time but is perfect for development
++  # since you don't have to restart the web server when you make code changes.
++  config.cache_classes = false
++
++  # Do not eager load code on boot.
++  config.eager_load = false
++
++  # Show full error reports and disable caching.
++  config.consider_all_requests_local       = true
++  config.action_controller.perform_caching = false
++
++  # Don't care if the mailer can't send.
++  config.action_mailer.raise_delivery_errors = false
++
++  # Print deprecation notices to the Rails logger.
++  config.active_support.deprecation = :log
++
++  # Raise an error on page load if there are pending migrations.
++  config.active_record.migration_error = :page_load
++
++  # Debug mode disables concatenation and preprocessing of assets.
++  # This option may cause significant delays in view rendering with a large
++  # number of complex assets.
++  config.assets.debug = true
++
++  # Adds additional error checking when serving assets at runtime.
++  # Checks for improperly declared sprockets dependencies.
++  # Raises helpful error messages.
++  config.assets.raise_runtime_errors = true
++
++  # Raises error for missing translations
++  # config.action_view.raise_on_missing_translations = true
++end
+diff --git a/config/environments/production.rb b/config/environments/production.rb
+new file mode 100644
+index 0000000..47d3553
+--- /dev/null
++++ b/config/environments/production.rb
+@@ -0,0 +1,83 @@
++Rails.application.configure do
++  # Settings specified here will take precedence over those in config/application.rb.
++
++  # Code is not reloaded between requests.
++  config.cache_classes = true
++
++  # Eager load code on boot. This eager loads most of Rails and
++  # your application in memory, allowing both threaded web servers
++  # and those relying on copy on write to perform better.
++  # Rake tasks automatically ignore this option for performance.
++  config.eager_load = true
++
++  # Full error reports are disabled and caching is turned on.
++  config.consider_all_requests_local       = false
++  config.action_controller.perform_caching = true
++
++  # Enable Rack::Cache to put a simple HTTP cache in front of your application
++  # Add `rack-cache` to your Gemfile before enabling this.
++  # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
++  # config.action_dispatch.rack_cache = true
++
++  # Disable Rails's static asset server (Apache or nginx will already do this).
++  config.serve_static_assets = false
++
++  # Compress JavaScripts and CSS.
++  config.assets.js_compressor = :uglifier
++  # config.assets.css_compressor = :sass
++
++  # Do not fallback to assets pipeline if a precompiled asset is missed.
++  config.assets.compile = false
++
++  # Generate digests for assets URLs.
++  config.assets.digest = true
++
++  # Version of your assets, change this if you want to expire all your assets.
++  config.assets.version = '1.0'
++
++  # Specifies the header that your server uses for sending files.
++  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
++  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
++
++  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
++  # config.force_ssl = true
++
++  # Set to :debug to see everything in the log.
++  config.log_level = :info
++
++  # Prepend all log lines with the following tags.
++  # config.log_tags = [ :subdomain, :uuid ]
++
++  # Use a different logger for distributed setups.
++  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
++
++  # Use a different cache store in production.
++  # config.cache_store = :mem_cache_store
++
++  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
++  # config.action_controller.asset_host = "http://assets.example.com"
++
++  # Precompile additional assets.
++  # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
++  # config.assets.precompile += %w( search.js )
++
++  # Ignore bad email addresses and do not raise email delivery errors.
++  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
++  # config.action_mailer.raise_delivery_errors = false
++
++  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
++  # the I18n.default_locale when a translation cannot be found).
++  config.i18n.fallbacks = true
++
++  # Send deprecation notices to registered listeners.
++  config.active_support.deprecation = :notify
++
++  # Disable automatic flushing of the log to improve performance.
++  # config.autoflush_log = false
++
++  # Use default logging formatter so that PID and timestamp are not suppressed.
++  config.log_formatter = ::Logger::Formatter.new
++
++  # Do not dump schema after migrations.
++  config.active_record.dump_schema_after_migration = false
++end
+diff --git a/config/environments/test.rb b/config/environments/test.rb
+new file mode 100644
+index 0000000..053f5b6
+--- /dev/null
++++ b/config/environments/test.rb
+@@ -0,0 +1,39 @@
++Rails.application.configure do
++  # Settings specified here will take precedence over those in config/application.rb.
++
++  # The test environment is used exclusively to run your application's
++  # test suite. You never need to work with it otherwise. Remember that
++  # your test database is "scratch space" for the test suite and is wiped
++  # and recreated between test runs. Don't rely on the data there!
++  config.cache_classes = true
++
++  # Do not eager load code on boot. This avoids loading your whole application
++  # just for the purpose of running a single test. If you are using a tool that
++  # preloads Rails for running tests, you may have to set it to true.
++  config.eager_load = false
++
++  # Configure static asset server for tests with Cache-Control for performance.
++  config.serve_static_assets  = true
++  config.static_cache_control = 'public, max-age=3600'
++
++  # Show full error reports and disable caching.
++  config.consider_all_requests_local       = true
++  config.action_controller.perform_caching = false
++
++  # Raise exceptions instead of rendering exception templates.
++  config.action_dispatch.show_exceptions = false
++
++  # Disable request forgery protection in test environment.
++  config.action_controller.allow_forgery_protection = false
++
++  # Tell Action Mailer not to deliver emails to the real world.
++  # The :test delivery method accumulates sent emails in the
++  # ActionMailer::Base.deliveries array.
++  config.action_mailer.delivery_method = :test
++
++  # Print deprecation notices to the stderr.
++  config.active_support.deprecation = :stderr
++
++  # Raises error for missing translations
++  # config.action_view.raise_on_missing_translations = true
++end
+diff --git a/config/initializers/backtrace_silencers.rb b/config/initializers/backtrace_silencers.rb
+new file mode 100644
+index 0000000..59385cd
+--- /dev/null
++++ b/config/initializers/backtrace_silencers.rb
+@@ -0,0 +1,7 @@
++# Be sure to restart your server when you modify this file.
++
++# You can add backtrace silencers for libraries that you're using but don't wish to see in your backtraces.
++# Rails.backtrace_cleaner.add_silencer { |line| line =~ /my_noisy_library/ }
++
++# You can also remove all the silencers if you're trying to debug a problem that might stem from framework code.
++# Rails.backtrace_cleaner.remove_silencers!
+diff --git a/config/initializers/cookies_serializer.rb b/config/initializers/cookies_serializer.rb
+new file mode 100644
+index 0000000..7a06a89
+--- /dev/null
++++ b/config/initializers/cookies_serializer.rb
+@@ -0,0 +1,3 @@
++# Be sure to restart your server when you modify this file.
++
++Rails.application.config.action_dispatch.cookies_serializer = :json
+\ No newline at end of file
+diff --git a/config/initializers/filter_parameter_logging.rb b/config/initializers/filter_parameter_logging.rb
+new file mode 100644
+index 0000000..4a994e1
+--- /dev/null
++++ b/config/initializers/filter_parameter_logging.rb
+@@ -0,0 +1,4 @@
++# Be sure to restart your server when you modify this file.
++
++# Configure sensitive parameters which will be filtered from the log file.
++Rails.application.config.filter_parameters += [:password]
+diff --git a/config/initializers/inflections.rb b/config/initializers/inflections.rb
+new file mode 100644
+index 0000000..ac033bf
+--- /dev/null
++++ b/config/initializers/inflections.rb
+@@ -0,0 +1,16 @@
++# Be sure to restart your server when you modify this file.
++
++# Add new inflection rules using the following format. Inflections
++# are locale specific, and you may define rules for as many different
++# locales as you wish. All of these examples are active by default:
++# ActiveSupport::Inflector.inflections(:en) do |inflect|
++#   inflect.plural /^(ox)$/i, '\1en'
++#   inflect.singular /^(ox)en/i, '\1'
++#   inflect.irregular 'person', 'people'
++#   inflect.uncountable %w( fish sheep )
++# end
++
++# These inflection rules are supported but not enabled by default:
++# ActiveSupport::Inflector.inflections(:en) do |inflect|
++#   inflect.acronym 'RESTful'
++# end
+diff --git a/config/initializers/mime_types.rb b/config/initializers/mime_types.rb
+new file mode 100644
+index 0000000..dc18996
+--- /dev/null
++++ b/config/initializers/mime_types.rb
+@@ -0,0 +1,4 @@
++# Be sure to restart your server when you modify this file.
++
++# Add new mime types for use in respond_to blocks:
++# Mime::Type.register "text/richtext", :rtf
+diff --git a/config/initializers/session_store.rb b/config/initializers/session_store.rb
+new file mode 100644
+index 0000000..1152207
+--- /dev/null
++++ b/config/initializers/session_store.rb
+@@ -0,0 +1,3 @@
++# Be sure to restart your server when you modify this file.
++
++Rails.application.config.session_store :cookie_store, key: '_data-engineering_session'
+diff --git a/config/initializers/wrap_parameters.rb b/config/initializers/wrap_parameters.rb
+new file mode 100644
+index 0000000..33725e9
+--- /dev/null
++++ b/config/initializers/wrap_parameters.rb
+@@ -0,0 +1,14 @@
++# Be sure to restart your server when you modify this file.
++
++# This file contains settings for ActionController::ParamsWrapper which
++# is enabled by default.
++
++# Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
++ActiveSupport.on_load(:action_controller) do
++  wrap_parameters format: [:json] if respond_to?(:wrap_parameters)
++end
++
++# To enable root element in JSON for ActiveRecord objects.
++# ActiveSupport.on_load(:active_record) do
++#  self.include_root_in_json = true
++# end
+diff --git a/config/locales/en.yml b/config/locales/en.yml
+new file mode 100644
+index 0000000..0653957
+--- /dev/null
++++ b/config/locales/en.yml
+@@ -0,0 +1,23 @@
++# Files in the config/locales directory are used for internationalization
++# and are automatically loaded by Rails. If you want to use locales other
++# than English, add the necessary files in this directory.
++#
++# To use the locales, use `I18n.t`:
++#
++#     I18n.t 'hello'
++#
++# In views, this is aliased to just `t`:
++#
++#     <%= t('hello') %>
++#
++# To use a different locale, set it with `I18n.locale`:
++#
++#     I18n.locale = :es
++#
++# This would use the information in config/locales/es.yml.
++#
++# To learn more, please read the Rails Internationalization guide
++# available at http://guides.rubyonrails.org/i18n.html.
++
++en:
++  hello: "Hello world"
+diff --git a/config/routes.rb b/config/routes.rb
+new file mode 100644
+index 0000000..ef77acb
+--- /dev/null
++++ b/config/routes.rb
+@@ -0,0 +1,59 @@
++Rails.application.routes.draw do
++  resources :data_importer, only: [:index, :create]
++  root 'data_importer#index'
++
++  # The priority is based upon order of creation: first created -> highest priority.
++  # See how all your routes lay out with "rake routes".
++
++  # You can have the root of your site routed with "root"
++  # root 'welcome#index'
++
++  # Example of regular route:
++  #   get 'products/:id' => 'catalog#view'
++
++  # Example of named route that can be invoked with purchase_url(id: product.id)
++  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
++
++  # Example resource route (maps HTTP verbs to controller actions automatically):
++  #   resources :products
++
++  # Example resource route with options:
++  #   resources :products do
++  #     member do
++  #       get 'short'
++  #       post 'toggle'
++  #     end
++  #
++  #     collection do
++  #       get 'sold'
++  #     end
++  #   end
++
++  # Example resource route with sub-resources:
++  #   resources :products do
++  #     resources :comments, :sales
++  #     resource :seller
++  #   end
++
++  # Example resource route with more complex sub-resources:
++  #   resources :products do
++  #     resources :comments
++  #     resources :sales do
++  #       get 'recent', on: :collection
++  #     end
++  #   end
++
++  # Example resource route with concerns:
++  #   concern :toggleable do
++  #     post 'toggle'
++  #   end
++  #   resources :posts, concerns: :toggleable
++  #   resources :photos, concerns: :toggleable
++
++  # Example resource route within a namespace:
++  #   namespace :admin do
++  #     # Directs /admin/products/* to Admin::ProductsController
++  #     # (app/controllers/admin/products_controller.rb)
++  #     resources :products
++  #   end
++end
+diff --git a/config/secrets.yml b/config/secrets.yml
+new file mode 100644
+index 0000000..820d789
+--- /dev/null
++++ b/config/secrets.yml
+@@ -0,0 +1,22 @@
++# Be sure to restart your server when you modify this file.
++
++# Your secret key is used for verifying the integrity of signed cookies.
++# If you change this key, all old signed cookies will become invalid!
++
++# Make sure the secret is at least 30 characters and all random,
++# no regular words or you'll be exposed to dictionary attacks.
++# You can use `rake secret` to generate a secure secret key.
++
++# Make sure the secrets in this file are kept private
++# if you're sharing your code publicly.
++
++development:
++  secret_key_base: 8de6df6668f834fefe53402a6ed555a157d2d6f0e3e94a89f7d885e18cdd604706f796db3d4f9cc20111af13ad76d48a4807289227b790338421db95d1232227
++
++test:
++  secret_key_base: 234b27122160107e630460cf5ac8cdf5646a636bfa4d1c486ff2454cec19b87754916331d17763d392de5f81a4323be5cb9fb39a60778e8c30901704aa34d1b0
++
++# Do not keep production secrets in the repository,
++# instead read values from the environment.
++production:
++  secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+diff --git a/db/migrate/20140508144513_create_purchasers.rb b/db/migrate/20140508144513_create_purchasers.rb
+new file mode 100644
+index 0000000..c62d42b
+--- /dev/null
++++ b/db/migrate/20140508144513_create_purchasers.rb
+@@ -0,0 +1,9 @@
++class CreatePurchasers < ActiveRecord::Migration
++  def change
++    create_table :purchasers do |t|
++      t.string :name
++
++      t.timestamps
++    end
++  end
++end
+diff --git a/db/migrate/20140508144608_create_merchants.rb b/db/migrate/20140508144608_create_merchants.rb
+new file mode 100644
+index 0000000..d00a7d6
+--- /dev/null
++++ b/db/migrate/20140508144608_create_merchants.rb
+@@ -0,0 +1,10 @@
++class CreateMerchants < ActiveRecord::Migration
++  def change
++    create_table :merchants do |t|
++      t.string :name
++      t.text :address
++
++      t.timestamps
++    end
++  end
++end
+diff --git a/db/migrate/20140508144647_create_items.rb b/db/migrate/20140508144647_create_items.rb
+new file mode 100644
+index 0000000..cb0fc5f
+--- /dev/null
++++ b/db/migrate/20140508144647_create_items.rb
+@@ -0,0 +1,11 @@
++class CreateItems < ActiveRecord::Migration
++  def change
++    create_table :items do |t|
++      t.text :description
++      t.decimal :price, precision: 8, scale: 2
++      t.integer :merchant_id
++
++      t.timestamps
++    end
++  end
++end
+diff --git a/db/migrate/20140508144803_create_purchases.rb b/db/migrate/20140508144803_create_purchases.rb
+new file mode 100644
+index 0000000..d6efd86
+--- /dev/null
++++ b/db/migrate/20140508144803_create_purchases.rb
+@@ -0,0 +1,11 @@
++class CreatePurchases < ActiveRecord::Migration
++  def change
++    create_table :purchases do |t|
++      t.integer :purchaser_id
++      t.integer :item_id
++      t.integer :count
++
++      t.timestamps
++    end
++  end
++end
+diff --git a/db/schema.rb b/db/schema.rb
+new file mode 100644
+index 0000000..3f2f9a5
+--- /dev/null
++++ b/db/schema.rb
+@@ -0,0 +1,45 @@
++# encoding: UTF-8
++# This file is auto-generated from the current state of the database. Instead
++# of editing this file, please use the migrations feature of Active Record to
++# incrementally modify your database, and then regenerate this schema definition.
++#
++# Note that this schema.rb definition is the authoritative source for your
++# database schema. If you need to create the application database on another
++# system, you should be using db:schema:load, not running all the migrations
++# from scratch. The latter is a flawed and unsustainable approach (the more migrations
++# you'll amass, the slower it'll run and the greater likelihood for issues).
++#
++# It's strongly recommended that you check this file into your version control system.
++
++ActiveRecord::Schema.define(version: 20140508144803) do
++
++  create_table "items", force: true do |t|
++    t.text     "description"
++    t.decimal  "price",       precision: 8, scale: 2
++    t.integer  "merchant_id"
++    t.datetime "created_at"
++    t.datetime "updated_at"
++  end
++
++  create_table "merchants", force: true do |t|
++    t.string   "name"
++    t.text     "address"
++    t.datetime "created_at"
++    t.datetime "updated_at"
++  end
++
++  create_table "purchasers", force: true do |t|
++    t.string   "name"
++    t.datetime "created_at"
++    t.datetime "updated_at"
++  end
++
++  create_table "purchases", force: true do |t|
++    t.integer  "purchaser_id"
++    t.integer  "item_id"
++    t.integer  "count"
++    t.datetime "created_at"
++    t.datetime "updated_at"
++  end
++
++end
+diff --git a/db/seeds.rb b/db/seeds.rb
+new file mode 100644
+index 0000000..4edb1e8
+--- /dev/null
++++ b/db/seeds.rb
+@@ -0,0 +1,7 @@
++# This file should contain all the record creation needed to seed the database with its default values.
++# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
++#
++# Examples:
++#
++#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
++#   Mayor.create(name: 'Emanuel', city: cities.first)
+diff --git a/example_input.tab b/example_input.tab
+index a5c9a96..60f454e 100644
+--- a/example_input.tab
++++ b/example_input.tab
+@@ -2,4 +2,4 @@ purchaser name	item description	item price	purchase count	merchant address	merch
+ Snake Plissken	$10 off $20 of food	10.0	2	987 Fake St	Bob's Pizza
+ Amy Pond	$30 of awesome for $10	10.0	5	456 Unreal Rd	Tom's Awesome Shop
+ Marty McFly	$20 Sneakers for $5	5.0	1	123 Fake St	Sneaker Store Emporium
+-Snake Plissken	$20 Sneakers for $5	5.0	4	123 Fake St	Sneaker Store Emporium
++Snake Plissken	$20 Sneakers for $5	5.0	4	123 Fake St	Sneaker Store Emporium
+\ No newline at end of file
+diff --git a/lib/assets/.keep b/lib/assets/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/lib/tasks/.keep b/lib/tasks/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/log/.keep b/log/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/public/404.html b/public/404.html
+new file mode 100644
+index 0000000..b612547
+--- /dev/null
++++ b/public/404.html
+@@ -0,0 +1,67 @@
++<!DOCTYPE html>
++<html>
++<head>
++  <title>The page you were looking for doesn't exist (404)</title>
++  <meta name="viewport" content="width=device-width,initial-scale=1">
++  <style>
++  body {
++    background-color: #EFEFEF;
++    color: #2E2F30;
++    text-align: center;
++    font-family: arial, sans-serif;
++    margin: 0;
++  }
++
++  div.dialog {
++    width: 95%;
++    max-width: 33em;
++    margin: 4em auto 0;
++  }
++
++  div.dialog > div {
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #BBB;
++    border-top: #B00100 solid 4px;
++    border-top-left-radius: 9px;
++    border-top-right-radius: 9px;
++    background-color: white;
++    padding: 7px 12% 0;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++
++  h1 {
++    font-size: 100%;
++    color: #730E15;
++    line-height: 1.5em;
++  }
++
++  div.dialog > p {
++    margin: 0 0 1em;
++    padding: 1em;
++    background-color: #F7F7F7;
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #999;
++    border-bottom-left-radius: 4px;
++    border-bottom-right-radius: 4px;
++    border-top-color: #DADADA;
++    color: #666;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++  </style>
++</head>
++
++<body>
++  <!-- This file lives in public/404.html -->
++  <div class="dialog">
++    <div>
++      <h1>The page you were looking for doesn't exist.</h1>
++      <p>You may have mistyped the address or the page may have moved.</p>
++    </div>
++    <p>If you are the application owner check the logs for more information.</p>
++  </div>
++</body>
++</html>
+diff --git a/public/422.html b/public/422.html
+new file mode 100644
+index 0000000..a21f82b
+--- /dev/null
++++ b/public/422.html
+@@ -0,0 +1,67 @@
++<!DOCTYPE html>
++<html>
++<head>
++  <title>The change you wanted was rejected (422)</title>
++  <meta name="viewport" content="width=device-width,initial-scale=1">
++  <style>
++  body {
++    background-color: #EFEFEF;
++    color: #2E2F30;
++    text-align: center;
++    font-family: arial, sans-serif;
++    margin: 0;
++  }
++
++  div.dialog {
++    width: 95%;
++    max-width: 33em;
++    margin: 4em auto 0;
++  }
++
++  div.dialog > div {
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #BBB;
++    border-top: #B00100 solid 4px;
++    border-top-left-radius: 9px;
++    border-top-right-radius: 9px;
++    background-color: white;
++    padding: 7px 12% 0;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++
++  h1 {
++    font-size: 100%;
++    color: #730E15;
++    line-height: 1.5em;
++  }
++
++  div.dialog > p {
++    margin: 0 0 1em;
++    padding: 1em;
++    background-color: #F7F7F7;
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #999;
++    border-bottom-left-radius: 4px;
++    border-bottom-right-radius: 4px;
++    border-top-color: #DADADA;
++    color: #666;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++  </style>
++</head>
++
++<body>
++  <!-- This file lives in public/422.html -->
++  <div class="dialog">
++    <div>
++      <h1>The change you wanted was rejected.</h1>
++      <p>Maybe you tried to change something you didn't have access to.</p>
++    </div>
++    <p>If you are the application owner check the logs for more information.</p>
++  </div>
++</body>
++</html>
+diff --git a/public/500.html b/public/500.html
+new file mode 100644
+index 0000000..061abc5
+--- /dev/null
++++ b/public/500.html
+@@ -0,0 +1,66 @@
++<!DOCTYPE html>
++<html>
++<head>
++  <title>We're sorry, but something went wrong (500)</title>
++  <meta name="viewport" content="width=device-width,initial-scale=1">
++  <style>
++  body {
++    background-color: #EFEFEF;
++    color: #2E2F30;
++    text-align: center;
++    font-family: arial, sans-serif;
++    margin: 0;
++  }
++
++  div.dialog {
++    width: 95%;
++    max-width: 33em;
++    margin: 4em auto 0;
++  }
++
++  div.dialog > div {
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #BBB;
++    border-top: #B00100 solid 4px;
++    border-top-left-radius: 9px;
++    border-top-right-radius: 9px;
++    background-color: white;
++    padding: 7px 12% 0;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++
++  h1 {
++    font-size: 100%;
++    color: #730E15;
++    line-height: 1.5em;
++  }
++
++  div.dialog > p {
++    margin: 0 0 1em;
++    padding: 1em;
++    background-color: #F7F7F7;
++    border: 1px solid #CCC;
++    border-right-color: #999;
++    border-left-color: #999;
++    border-bottom-color: #999;
++    border-bottom-left-radius: 4px;
++    border-bottom-right-radius: 4px;
++    border-top-color: #DADADA;
++    color: #666;
++    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
++  }
++  </style>
++</head>
++
++<body>
++  <!-- This file lives in public/500.html -->
++  <div class="dialog">
++    <div>
++      <h1>We're sorry, but something went wrong.</h1>
++    </div>
++    <p>If you are the application owner check the logs for more information.</p>
++  </div>
++</body>
++</html>
+diff --git a/public/favicon.ico b/public/favicon.ico
+new file mode 100644
+index 0000000..e69de29
+diff --git a/public/robots.txt b/public/robots.txt
+new file mode 100644
+index 0000000..3c9c7c0
+--- /dev/null
++++ b/public/robots.txt
+@@ -0,0 +1,5 @@
++# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
++#
++# To ban all spiders from the entire site uncomment the next two lines:
++# User-agent: *
++# Disallow: /
+diff --git a/test/controllers/.keep b/test/controllers/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/controllers/data_importer_controller_test.rb b/test/controllers/data_importer_controller_test.rb
+new file mode 100644
+index 0000000..a5b13d6
+--- /dev/null
++++ b/test/controllers/data_importer_controller_test.rb
+@@ -0,0 +1,20 @@
++require 'test_helper'
++
++class DataImporterControllerTest < ActionController::TestCase
++
++  test "should get index" do
++    get :index
++    assert_response :success
++  end
++
++  test "should accept an uploaded file and redirect to index with appropriate success/error message" do
++    test_file = Rack::Test::UploadedFile.new("#{Rails.root}/example_input.tab")
++    post :create, purchases_file: test_file
++    assert_redirected_to data_importer_index_path(notice: "File was successfully imported. Total amount gross revenue: $95.00")
++
++    test_file = Rack::Test::UploadedFile.new("#{Rails.root}/Gemfile")
++    post :create, purchases_file: test_file
++    assert_redirected_to data_importer_index_path(error: 'Import failed. Please make sure your file is properly formatted.')
++  end
++
++end
+diff --git a/test/fixtures/.keep b/test/fixtures/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/fixtures/items.yml b/test/fixtures/items.yml
+new file mode 100644
+index 0000000..be86636
+--- /dev/null
++++ b/test/fixtures/items.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++one:
++  description: Item1
++  price: 9.99
++  merchant_id: 1
++
++two:
++  description: Item2
++  price: 9.99
++  merchant_id: 1
+diff --git a/test/fixtures/merchants.yml b/test/fixtures/merchants.yml
+new file mode 100644
+index 0000000..0fa3f1e
+--- /dev/null
++++ b/test/fixtures/merchants.yml
+@@ -0,0 +1,9 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++one:
++  name: Merchant1
++  address: Address1
++
++two:
++  name: Merchant2
++  address: Address2
+diff --git a/test/fixtures/purchasers.yml b/test/fixtures/purchasers.yml
+new file mode 100644
+index 0000000..0b9186d
+--- /dev/null
++++ b/test/fixtures/purchasers.yml
+@@ -0,0 +1,7 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++one:
++  name: John
++
++two:
++  name: Bill
+diff --git a/test/fixtures/purchases.yml b/test/fixtures/purchases.yml
+new file mode 100644
+index 0000000..b147562
+--- /dev/null
++++ b/test/fixtures/purchases.yml
+@@ -0,0 +1,11 @@
++# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
++
++one:
++  purchaser_id: 1
++  item_id: 1
++  count: 1
++
++two:
++  purchaser_id: 1
++  item_id: 1
++  count: 1
+diff --git a/test/helpers/.keep b/test/helpers/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/helpers/data_importer_helper_test.rb b/test/helpers/data_importer_helper_test.rb
+new file mode 100644
+index 0000000..5cf7c78
+--- /dev/null
++++ b/test/helpers/data_importer_helper_test.rb
+@@ -0,0 +1,4 @@
++require 'test_helper'
++
++class DataImporterHelperTest < ActionView::TestCase
++end
+diff --git a/test/integration/.keep b/test/integration/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/mailers/.keep b/test/mailers/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/models/.keep b/test/models/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/test/models/data_importer_test.rb b/test/models/data_importer_test.rb
+new file mode 100644
+index 0000000..3786804
+--- /dev/null
++++ b/test/models/data_importer_test.rb
+@@ -0,0 +1,10 @@
++require 'test_helper'
++
++class DataImporterTest < ActiveSupport::TestCase
++  test 'it should import a properly formatted tab delimited file' do
++    assert_difference 'Purchase.count', 4 do
++      total_amount_gross_revenue = DataImporter.import("#{Rails.root}/example_input.tab")
++      assert_match total_amount_gross_revenue.to_s, '95.0'
++    end
++  end
++end
+diff --git a/test/models/item_test.rb b/test/models/item_test.rb
+new file mode 100644
+index 0000000..0d06099
+--- /dev/null
++++ b/test/models/item_test.rb
+@@ -0,0 +1,33 @@
++require 'test_helper'
++
++class ItemTest < ActiveSupport::TestCase
++  test 'item attributes must not be empty' do
++    item = Item.new
++    assert item.invalid?
++    assert item.errors[:description].any?
++    assert item.errors[:price].any?
++    assert item.errors[:merchant_id].any?
++
++    item.description = 'Item description'
++    item.price = 9.99
++    item.merchant_id = merchants(:one).id
++    assert item.valid?
++  end
++
++  test 'item price must be positive' do
++    item = Item.new(description: 'Item Description', merchant_id: merchants(:one).id)
++    item.price = -0.01
++    assert item.invalid?
++    assert_equal ["must be greater than or equal to 0.01"], item.errors[:price]
++
++    item.price = 0
++    assert item.invalid?
++    assert_equal ["must be greater than or equal to 0.01"], item.errors[:price]
++
++    item.price = 0.01
++    assert item.valid?
++
++    item.price = 1
++    assert item.valid?
++  end
++end
+diff --git a/test/models/merchant_test.rb b/test/models/merchant_test.rb
+new file mode 100644
+index 0000000..e5f538a
+--- /dev/null
++++ b/test/models/merchant_test.rb
+@@ -0,0 +1,14 @@
++require 'test_helper'
++
++class MerchantTest < ActiveSupport::TestCase
++  test 'merchant attributes must not be empty' do
++    merchant = Merchant.new
++    assert merchant.invalid?
++    assert merchant.errors[:name].any?
++    assert merchant.errors[:address].any?
++
++    merchant.name = 'Merchant'
++    merchant.address = '123 Address'
++    assert merchant.valid?
++  end
++end
+diff --git a/test/models/purchase_test.rb b/test/models/purchase_test.rb
+new file mode 100644
+index 0000000..17c69af
+--- /dev/null
++++ b/test/models/purchase_test.rb
+@@ -0,0 +1,30 @@
++require 'test_helper'
++
++class PurchaseTest < ActiveSupport::TestCase
++  test 'purchase attributes must not be empty' do
++    purchase = Purchase.new
++    assert purchase.invalid?
++    assert purchase.errors[:count].any?
++    assert purchase.errors[:purchaser_id].any?
++    assert purchase.errors[:item_id].any?
++
++    purchase.count = 1
++    purchase.purchaser_id = purchasers(:one).id
++    purchase.item_id = items(:one).id
++    assert purchase.valid?
++  end
++
++  test 'purchase count must be positive' do
++    purchase = Purchase.new(purchaser_id: purchasers(:one).id, item_id: items(:one).id)
++    purchase.count = -1
++    assert purchase.invalid?
++    assert_equal ["must be greater than or equal to 1"], purchase.errors[:count]
++
++    purchase.count = 0
++    assert purchase.invalid?
++    assert_equal ["must be greater than or equal to 1"], purchase.errors[:count]
++
++    purchase.count = 1
++    assert purchase.valid?
++  end
++end
+diff --git a/test/models/purchaser_test.rb b/test/models/purchaser_test.rb
+new file mode 100644
+index 0000000..5fa2daf
+--- /dev/null
++++ b/test/models/purchaser_test.rb
+@@ -0,0 +1,13 @@
++require 'test_helper'
++
++class PurchaserTest < ActiveSupport::TestCase
++  test 'purchaser attributes must not be empty' do
++    purchaser = Purchaser.new
++    assert purchaser.invalid?
++    assert purchaser.errors[:name].any?
++
++    purchaser.name = 'John'
++    assert purchaser.valid?
++  end
++
++end
+diff --git a/test/test_helper.rb b/test/test_helper.rb
+new file mode 100644
+index 0000000..bf95f81
+--- /dev/null
++++ b/test/test_helper.rb
+@@ -0,0 +1,13 @@
++ENV['RAILS_ENV'] ||= 'test'
++require File.expand_path('../../config/environment', __FILE__)
++require 'rails/test_help'
++
++class ActiveSupport::TestCase
++  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
++  #
++  # Note: You'll currently still have to declare fixtures explicitly in integration tests
++  # -- they do not yet inherit this setting
++  fixtures :all
++
++  # Add more helper methods to be used by all tests here...
++end
+diff --git a/vendor/assets/javascripts/.keep b/vendor/assets/javascripts/.keep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/vendor/assets/stylesheets/.keep b/vendor/assets/stylesheets/.keep
+new file mode 100644
+index 0000000..e69de29
+-- 
+1.8.1.5
+
